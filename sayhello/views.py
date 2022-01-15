@@ -21,7 +21,7 @@ def index():
         message = Message(body=body, name=name)
         db.session.add(message)
         db.session.commit()
-        flash('Your message have been sent to the world!')
+        flash('提交成功!')
         return redirect(url_for('index'))
 
     messages = Message.query.order_by(Message.timestamp.desc()).all()

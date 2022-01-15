@@ -12,8 +12,8 @@
 <main class="container">
     <header>
         <h1 class="text-center display-4">
-            <a href="{{ url_for('index') }}" class="text-success"><strong>Say Hello</strong></a>
-            <small class="text-muted sub-title">to the world</small>
+            <a href="{{ url_for('index') }}" class="text-success"><strong>记事本</strong></a>
+            <small class="text-muted sub-title">Say Hello to the world</small>
         </h1>
     </header>
     {% for message in get_flashed_messages() %}
@@ -29,7 +29,7 @@
                 <a href="https://github.com/greyli/sayhello" title="Fork me on GitHub">GitHub</a> /
                 <a href="http://helloflask.com" title="A HelloFlask project">HelloFlask</a>
             </small>
-            <p><a id="bottom" href="#" title="Go Top">&uarr;</a></p>
+            <p><a id="bottom" href="#" title="Go Top">返回顶部 &uarr;</a></p>
         {% endblock %}
     </footer>
 </main>
