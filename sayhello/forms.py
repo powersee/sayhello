@@ -12,5 +12,5 @@ from wtforms.validators import DataRequired, Length
 
 class HelloForm(FlaskForm):
     name = StringField('名字', validators=[DataRequired(), Length(1, 20)])
-    body = TextAreaField('信息内容', validators=[DataRequired(), Length(1, 200)])
+    body = TextAreaField('信息内容', validators=[DataRequired(), Length(1, 2000)])
     submit = SubmitField('提交')
