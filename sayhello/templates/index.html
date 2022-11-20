@@ -23,7 +23,7 @@
                         {{ moment(message.timestamp).fromNow(refresh=True) }}
                     </small>
                 </div>
-                <p class="mb-1">{{ message.body }}</p>
+                <pre class="mb-1">{{ message.body }}</pre>
             </a>
         {% endfor %}
     </div>
