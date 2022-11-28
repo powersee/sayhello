@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout master
+    - name: Checkout masterß
       uses: actions/checkout@master
 
 
@@ -24,6 +24,8 @@ jobs:
         DOCKER_USERNAME: ${{secrets.DU}}
         DOCKER_PASSWORD: ${{secrets.DP}}
       # 指定login命令登录hub.docker.com
+      run: |
+        echo "${DOCKER_PASSWORD}" | docker login --username ${DOCKER_USERNAME} --password-stdin
     
       
     - name: Set up Docker Buildx
