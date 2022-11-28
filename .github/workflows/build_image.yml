@@ -1,0 +1,43 @@
+name: Docker Image CI
+
+on: 
+  workflow_dispatch:
+    inputs:
+      title: 
+        description: '点击运行'
+        required: false
+        default: yes
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout master
+      uses: actions/checkout@master
+
+
+    - name: Login docker hub
+      env:
+        DOCKER_USERNAME: ${{secrets.DU}}
+        DOCKER_PASSWORD: ${{secrets.DP}}
+      # 指定login命令登录hub.docker.com
+    
+      
+    - name: Set up Docker Buildx
+      # 使用buildx来构建镜像，这个工具功能很丰富
+      uses: crazy-max/ghaction-docker-buildx@v1
+      with:
+        buildx-version: latest
+        
+        
+    - name: Build dockerfile (with push)
+      # 构建镜像，用buildx可以同时构建X86和ARM架构的镜像，然后推送到hub.docker.com
+      run: |
+        docker buildx build \
+        --platform=linux/amd64,linux/arm/v7,linux/arm64 \
+        --output "type=image,push=true" \
+        --file ./Dockerfile . \
+        --tag powersee/sayhello:latest
