@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h1>管理消息</h1>
+        <form method="POST">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col" style="width: 5%;"><input type="checkbox" id="select-all"></th>
+                        <th scope="col" style="width: 20%;">姓名</th>
+                        <th scope="col">消息内容</th>
+                        <th scope="col" style="white-space: nowrap;">时间戳</th>
+                        <th scope="col" style="width: 15%;">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for message in messages %}
+                        <tr>
+                            <td><input type="checkbox" name="delete_ids" value="{{ message.id }}"></td>
+                            <td>{{ message.name }}</td>
+                            <td>
+                                <span class="message-body">{{ message.body }}</span>
+                                <input type="text" name="new_body" class="form-control d-none edit-input" value="{{ message.body }}">
+                            </td>
+                            <td style="white-space: nowrap;">{{ moment(message.timestamp).fromNow(refresh=True) }}</td>
+                            <td>
+                                <button type="button" class="btn btn-warning btn-sm edit-btn">编辑</button>
+                                <button type="submit" name="edit_id" value="{{ message.id }}" class="btn btn-success btn-sm d-none save-btn">保存</button>
+                                <button type="submit" name="delete_id" value="{{ message.id }}" class="btn btn-danger btn-sm">删除</button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- 批量删除按钮 -->
+            <button type="submit" class="btn btn-danger">删除选中</button>
+        </form>
+
+        <!-- 分页控制 -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                {% if pagination.has_prev %}
+                    <li class="page-item"><a class="page-link" href="{{ url_for('manage_messages', page=pagination.prev_num) }}">上一页</a></li>
+                {% else %}
+                    <li class="page-item disabled"><a class="page-link">上一页</a></li>
+                {% endif %}
+
+                {% for page_num in pagination.iter_pages() %}
+                    {% if page_num %}
+                        {% if page_num == pagination.page %}
+                            <li class="page-item active"><a class="page-link">{{ page_num }}</a></li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link" href="{{ url_for('manage_messages', page=page_num) }}">{{ page_num }}</a></li>
+                        {% endif %}
+                    {% else %}
+                        <li class="page-item disabled"><a class="page-link">…</a></li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if pagination.has_next %}
+                    <li class="page-item"><a class="page-link" href="{{ url_for('manage_messages', page=pagination.next_num) }}">下一页</a></li>
+                {% else %}
+                    <li class="page-item disabled"><a class="page-link">下一页</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 全选功能
+            document.getElementById('select-all').addEventListener('change', function() {
+                document.querySelectorAll('input[name="delete_ids"]').forEach(function(checkbox) {
+                    checkbox.checked = this.checked;
+                }, this);
+            });
+
+            // 编辑功能
+            document.querySelectorAll('.edit-btn').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    var row = this.closest('tr');
+                    row.querySelector('.message-body').classList.add('d-none');
+                    row.querySelector('.edit-input').classList.remove('d-none');
+                    this.classList.add('d-none');
+                    row.querySelector('.save-btn').classList.remove('d-none');
+                });
+            });
+        });
+    </script>
+{% endblock %}
