@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'bootstrap/form.html' import render_form %}
+{% from 'form.html' import render_form %}
 
 {% block content %}
     <div class="hello-form">
@@ -18,13 +18,65 @@
                         <small class="text-muted"> #{{ loop.revindex }}</small>
                     </h5>
                     <small data-toggle="tooltip" data-placement="top"
-                           data-timestamp="{{ message.timestamp.strftime('%Y-%m-%dT%H:%M:%SZ') }}"
-                           data-delay="500">
+                        data-timestamp="{{ message.timestamp.strftime('%Y-%m-%dT%H:%M:%SZ') }}"
+                        data-delay="500">
                         {{ moment(message.timestamp).fromNow(refresh=True) }}
                     </small>
                 </div>
-                <pre class="mb-1">{{ message.body }}</pre>
+                <pre class="mb-1 copy-text">{{ message.body }}</pre>
             </a>
         {% endfor %}
     </div>
+
+    <!-- 自定义 Toast 提示 -->
+    <div id="toast" class="toast">
+        <div class="toast-body">
+            内容已复制到剪贴板！
+        </div>
+    </div>
+
+    <style>
+        /* 自定义 Toast 样式 */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: none; /* 初始时隐藏 */
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .toast.show {
+            display: block;
+            opacity: 1;
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var toastEl = document.getElementById('toast');
+
+            // 为所有 .copy-text 元素添加点击事件监听器
+            document.querySelectorAll('.copy-text').forEach(function(element) {
+                element.addEventListener('click', function() {
+                    // 创建一个临时的textarea元素来复制内容
+                    var tempTextarea = document.createElement('textarea');
+                    tempTextarea.value = this.textContent;
+                    document.body.appendChild(tempTextarea);
+                    tempTextarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(tempTextarea);
+
+                    // 显示自定义 toast 提示
+                    toastEl.classList.add('show');
+                    setTimeout(function() {
+                        toastEl.classList.remove('show');
+                    }, 2000); // 2秒后隐藏提示
+                });
+            });
+        });
+    </script>
 {% endblock %}
