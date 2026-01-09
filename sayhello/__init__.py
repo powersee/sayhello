@@ -5,15 +5,21 @@
     :copyright: © 2018 Grey Li <withlihui@gmail.com>
     :license: MIT, see LICENSE for more details.
 """
+# # 设置环境变量
+# os.environ["FLASK_RUN_HOST"] = "0.0.0.0"
+# os.environ["FLASK_RUN_PORT"] = "5000"
+
+
 from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 
-app = Flask('sayhello')
-app.config.from_pyfile('settings.py')
+app = Flask("sayhello")
+app.config.from_pyfile("settings.py")
 app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True
+
 
 db = SQLAlchemy(app)
 bootstrap = Bootstrap(app)

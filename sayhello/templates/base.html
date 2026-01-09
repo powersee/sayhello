@@ -30,8 +30,28 @@
                 <a href="http://helloflask.com" title="A HelloFlask project">HelloFlask</a>/
                 <a href="https://space.bilibili.com/254479550" title="Powersee">Powersee</a>
             </small>
-            <p><a id="bottom" href="#" title="Go Top">返回顶部 &uarr;</a></p>
+            <p>
+                <a id="bottom" href="#" title="Go Top">返回顶部 &uarr;</a>
+                <a id="navigation-link" href="#" title="Navigation"></a>
+            </p>
         {% endblock %}
+
+<script>
+    // 获取当前页面的URL
+    const currentUrl = window.location.pathname;
+    // 获取链接元素
+    const linkElement = document.getElementById("navigation-link");
+    // 检查当前页面的URL
+    if (currentUrl.includes("manage_messages")) {
+        // 如果当前页面是 manage_messages，显示跳转到首页
+        linkElement.textContent = "跳转到home页面";
+        linkElement.href = "/";
+    } else {
+        // 否则显示跳转到管理界面
+        linkElement.textContent = "跳转到管理界面";
+        linkElement.href = "/manage_messages";
+    }
+</script>
     </footer>
 </main>
 
